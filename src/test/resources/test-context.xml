@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="
+       http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://camel.apache.org/schema/spring
+       http://camel.apache.org/schema/spring/camel-spring.xsd"
+  default-init-method="afterPropertiesSet"
+  default-destroy-method="beforeDestroy">
+
+  <bean id="pythonObjectFactory" class="edu.colorado.cires.cmg.pycamel.JythonPythonObjectFactory"/>
+
+  <bean id="pyCamelProcessorTester" class="edu.colorado.cires.cmg.pycamel.PyCamelProcessorBean">
+    <property name="pythonObjectFactory" ref="pythonObjectFactory"/>
+    <property name="pythonModule" value="pycamel.jython.processor.PyCamelProcessorTester"/>
+    <property name="pythonClass" value="PyCamelProcessorTester"/>
+  </bean>
+
+  <bean id="propertyTester" class="edu.colorado.cires.cmg.pycamel.PyCamelProcessorBean">
+    <property name="pythonObjectFactory" ref="pythonObjectFactory"/>
+    <property name="pythonModule" value="pycamel.jython.processor.PropertyTester"/>
+    <property name="pythonClass" value="PropertyTester"/>
+    <property name="properties">
+      <map>
+        <entry key="name" value="test" />
+      </map>
+    </property>
+  </bean>
+
+  <bean id="nameService" class="edu.colorado.cires.cmg.pycamel.PyCamelObjectWrapperBean">
+    <property name="pythonObjectFactory" ref="pythonObjectFactory"/>
+    <property name="pythonModule" value="pycamel.jython.service.NameService"/>
+    <property name="pythonClass" value="NameService"/>
+    <property name="properties">
+      <map>
+        <entry key="name" value="test2" />
+      </map>
+    </property>
+  </bean>
+
+  <bean id="propertyTester2" class="edu.colorado.cires.cmg.pycamel.PyCamelProcessorBean">
+    <property name="pythonObjectFactory" ref="pythonObjectFactory"/>
+    <property name="pythonModule" value="pycamel.jython.processor.PropertyTester2"/>
+    <property name="pythonClass" value="PropertyTester2"/>
+    <property name="properties">
+      <map>
+        <entry key="service" value-ref="nameService" />
+      </map>
+    </property>
+  </bean>
+
+  <camelContext xmlns="http://camel.apache.org/schema/spring">
+    <route>
+      <from uri="direct:process"/>
+      <process ref="pyCamelProcessorTester"/>
+      <to uri="mock:process-out"/>
+    </route>
+    <route>
+      <from uri="direct:property-test"/>
+      <process ref="propertyTester"/>
+      <to uri="mock:property-test-out"/>
+    </route>
+    <route>
+      <from uri="direct:property-test2"/>
+      <process ref="propertyTester2"/>
+      <to uri="mock:property-test-out2"/>
+    </route>
+  </camelContext>
+</beans>
