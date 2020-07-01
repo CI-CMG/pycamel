@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 function set_svc_home {
   local SOURCE="${BASH_SOURCE[0]}"
   while [[ -h "$SOURCE" ]]; do # resolve $SOURCE until the file is no longer a symlink
@@ -11,15 +10,12 @@ function set_svc_home {
   SVC_HOME="$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd )"
 }
 
-set -ex
+set -x
 
 set_svc_home
 cd "$SVC_HOME"
-rm -rf jpy
-git clone https://github.com/bcdev/jpy.git
-cd jpy
-git checkout 0.9.0
-python get-pip.py
-python setup.py install
-mvn install -DskipTests
 
+env PYTHON_CONFIGURE_OPTS="--enable-shared" pyenv install 2.7.18 -s
+pyenv uninstall pycamel-dev-2.7.18
+pyenv virtualenv 2.7.18 pycamel-dev-2.7.18
+pyenv local pycamel-dev-2.7.18

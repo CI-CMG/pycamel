@@ -13,27 +13,32 @@ public class JpyPythonObjectFactory implements PythonObjectFactory {
   private static final Logger LOGGER = LoggerFactory.getLogger(JpyPythonObjectFactory.class);
 
   private String importPath;
-  private String jpyLib;
-  private String jdlLib;
-  private String pythonLib;
-
+//  private String jpyLib;
+//  private String jdlLib;
+//  private String pythonLib;
+//  private String jpyConfig;
+//
   private final Map<String, PyModule> moduleMap = new HashMap<>();
 
   public void setImportPath(String importPath) {
     this.importPath = importPath;
   }
-
-  public void setJpyLib(String jpyLib) {
-    this.jpyLib = jpyLib;
-  }
-
-  public void setJdlLib(String jdlLib) {
-    this.jdlLib = jdlLib;
-  }
-
-  public void setPythonLib(String pythonLib) {
-    this.pythonLib = pythonLib;
-  }
+//
+//  public void setJpyLib(String jpyLib) {
+//    this.jpyLib = jpyLib;
+//  }
+//
+//  public void setJdlLib(String jdlLib) {
+//    this.jdlLib = jdlLib;
+//  }
+//
+//  public void setPythonLib(String pythonLib) {
+//    this.pythonLib = pythonLib;
+//  }
+//
+//  public void setJpyConfig(String jpyConfig) {
+//    this.jpyConfig = jpyConfig;
+//  }
 
   public void afterPropertiesSet() {
 //    jpy.jpyLib = /Users/cslater/projects/multibeam-ingest/venv/lib/python3.8/site-packages/jpy.cpython-38-darwin.so
@@ -42,12 +47,21 @@ public class JpyPythonObjectFactory implements PythonObjectFactory {
 //    jpy.pythonPrefix = /Users/cslater/projects/multibeam-ingest/venv
 //    jpy.pythonExecutable = /Users/cslater/projects/multibeam-ingest/venv/bin/python
 //    PyLib.
+//
+//    if(jpyConfig != null) {
+//      System.setProperty("jpy.config", jpyLib);
+//    }
+//
+//    System.setProperty("jpy.jpyLib", jpyLib);
+//    System.setProperty("jpy.jdlLib", jdlLib);
+//    System.setProperty("jpy.pythonLib", pythonLib);
 
-    System.setProperty("jpy.jpyLib", jpyLib);
-    System.setProperty("jpy.jdlLib", jdlLib);
-    System.setProperty("jpy.pythonLib", pythonLib);
+    if(importPath != null) {
+      PyLib.startPython(importPath.split(","));
+    } else {
+      PyLib.startPython();
+    }
 
-    PyLib.startPython(importPath);
     PyLib.assertPythonRuns();
     LOGGER.info(PyLib.getPythonVersion());
   }

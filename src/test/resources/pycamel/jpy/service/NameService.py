@@ -1,6 +1,9 @@
-from edu.colorado.cires.cmg.pycamel import JythonPyCamelObjectWrapper
+import jpy
 
-class NameService(JythonPyCamelObjectWrapper):
+LoggerFactory = jpy.get_type('org.slf4j.LoggerFactory')
+LOGGER = LoggerFactory.getLogger('jpy.NameService')
+
+class NameService(object):
   def __init__(self):
     self.name = None
 
@@ -8,7 +11,7 @@ class NameService(JythonPyCamelObjectWrapper):
     return self
 
   def setProperties(self, properties):
-    self.name = properties['name']
+    self.name = properties.get('name')
 
   def afterPropertiesSet(self):
     pass
@@ -17,4 +20,5 @@ class NameService(JythonPyCamelObjectWrapper):
     pass
 
   def getName(self):
+    LOGGER.info("NameService.getName")
     return self.name

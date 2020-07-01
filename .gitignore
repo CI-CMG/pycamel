@@ -45,3 +45,5 @@ buildNumber.properties
 /.idea/
 *.iml
 /jpy/
+/jpy/
+/.python-version

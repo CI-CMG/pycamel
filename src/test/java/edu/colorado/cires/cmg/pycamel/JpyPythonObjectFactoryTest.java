@@ -1,10 +1,17 @@
 package edu.colorado.cires.cmg.pycamel;
 
+import static org.junit.Assert.*;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.stream.Stream;
 import org.apache.camel.EndpointInject;
 import org.apache.camel.ProducerTemplate;
 import org.apache.camel.component.mock.MockEndpoint;
 import org.apache.camel.test.spring.CamelSpringRunner;
 import org.apache.camel.test.spring.CamelTestContextBootstrapper;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +22,26 @@ import org.springframework.test.context.ContextConfiguration;
 
 @RunWith(CamelSpringRunner.class)
 @BootstrapWith(CamelTestContextBootstrapper.class)
-@ContextConfiguration("/jython-context.xml")
+@ContextConfiguration("/jpy-context.xml")
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
-public class JythonPythonObjectFactoryTest {
+public class JpyPythonObjectFactoryTest {
+
+  @BeforeClass
+  public static void beforeClass() throws Exception {
+
+    Path jpyDir = Paths.get("jpy").toAbsolutePath();
+
+    Path libDir;
+    try(Stream<Path> paths = Files.list(jpyDir.resolve("build"))) {
+      libDir = paths
+          .filter(path -> path.getFileName().toString().startsWith("lib."))
+          .findFirst()
+          .orElseThrow(() -> new RuntimeException("Unable to find jpy lib dir"));
+    }
+
+    Path jpyconfigProperties = libDir.resolve("jpyconfig.properties");
+    System.setProperty("jpy.config", jpyconfigProperties.toAbsolutePath().toString());
+  }
 
   @Autowired
   private ProducerTemplate producer;
