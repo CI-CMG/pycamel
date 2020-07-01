@@ -19,9 +19,9 @@ rm -rf jpy
 git clone https://github.com/bcdev/jpy.git
 cd jpy
 git checkout 0.9.0
-python get-pip.py
 pip install -U setuptools
 pip install -U pip
+#python get-pip.py
 python setup.py install
 mvn install -DskipTests
 
