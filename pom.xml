@@ -48,6 +48,7 @@
     <spring.version>5.2.7.RELEASE</spring.version>
     <jupiter.version>5.6.2</jupiter.version>
     <slf4j.version>1.7.30</slf4j.version>
+    <netty.version>4.1.52.Final</netty.version>
   </properties>
 
 
@@ -114,21 +115,38 @@
       <!-- Security Vulnerability Update -->
       <groupId>io.netty</groupId>
       <artifactId>netty-transport</artifactId>
-      <version>4.1.52.Final</version>
+      <version>${netty.version}</version>
     </dependency>
     <dependency>
       <!-- Security Vulnerability Update -->
       <groupId>io.netty</groupId>
       <artifactId>netty-codec</artifactId>
-      <version>4.1.52.Final</version>
+      <version>${netty.version}</version>
     </dependency>
     <dependency>
       <!-- Security Vulnerability Update -->
       <groupId>io.netty</groupId>
       <artifactId>netty-handler</artifactId>
-      <version>4.1.52.Final</version>
+      <version>${netty.version}</version>
     </dependency>
-
+    <dependency>
+      <!-- Security Vulnerability Update -->
+      <groupId>io.netty</groupId>
+      <artifactId>netty-buffer</artifactId>
+      <version>${netty.version}</version>
+    </dependency>
+    <dependency>
+      <!-- Security Vulnerability Update -->
+      <groupId>io.netty</groupId>
+      <artifactId>netty-common</artifactId>
+      <version>${netty.version}</version>
+    </dependency>
+    <dependency>
+      <!-- Security Vulnerability Update -->
+      <groupId>io.netty</groupId>
+      <artifactId>netty-resolver</artifactId>
+      <version>${netty.version}</version>
+    </dependency>
   </dependencies>
 
   <build>
